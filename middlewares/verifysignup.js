@@ -1,6 +1,7 @@
 
 // This file will contain the custom middleware for varifying the request body
 const db = require('../models');
+const util = require('../utils/constants');
 const User = db.user;
 
 const validateSignUp = async (req, res, next) => {
@@ -32,6 +33,12 @@ const validateSignUp = async (req, res, next) => {
         return res.status(401).send({message: `Email !!,  is already exist `});
     }
 
+    // Check Usertype
+    let userType = req.body.userType;
+    let userTypes = [util.userTypes.customer, util.userTypes.engineer, util.userTypes.admin];
+    if(userType && !userTypes.includes(userType)){
+        return res.status(400).send({message: `Failed !! Invalid userTypes`});
+    }
     next();
 }
 
