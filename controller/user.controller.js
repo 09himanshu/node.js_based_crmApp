@@ -18,6 +18,7 @@ exports.findAll = async (req, res) => {
     let name = req.query.name;
     let userType = req.query.userType;
     let userStatus = req.query.userStatus;
+    
 
     if(name && userType && userStatus) {
         query.name = name;

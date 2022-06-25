@@ -25,9 +25,28 @@ exports.create = async (req, res) => {
 
     try{
         const ticket = await Ticket.create(obj);
-        res.status(201).send(object.ticketsResponse(ticket));
+        // Find out the customer
+        if(ticket) {
+            let user = await User.findOne({userId: req.userId});
+            user.ticketsCreated.push(ticket._id);
+            await user.save();
+
+            // Update the engineer
+            engineer.ticketAssigned.push(ticket._id);
+            await engineer.save();
+            res.status(201).send(object.ticketsResponse(ticket));
+        }
     } catch(err) {
         res.status(500).send({message: `Error occur at ${err}`});
     }
+}
 
+// Get all tickets
+exports.find = async (req, res) => {
+    let ticket = await Ticket.find();
+    try{
+        res.status(200).send(object.ticketsResponse(ticket));
+    } catch(err) {
+        res.status(500).send({message: `Error occur at ${err}`});
+    }
 }
