@@ -33,6 +33,7 @@ async function init() {
 // Routes
 require('./routes/auth.routes')(app);
 require('./routes/users.routes')(app);
+require('./routes/tickets.routes')(app);
 
 // App listen on port
 app.listen(config.port, () => {
